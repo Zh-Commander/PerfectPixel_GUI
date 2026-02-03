@@ -235,5 +235,3 @@ Perfect Pixel 库（位于 `perfectPixel/` 目录）同样采用 MIT 许可证�
 ---
 
 **注意**：这是 Perfect Pixel 库的第三方 GUI 界面。核心算法和库由 [theamusing](https://github.com/theamusing/perfectPixel) 开发维护。
-
-*[English version available](../README.md)*
