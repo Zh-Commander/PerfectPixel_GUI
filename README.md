@@ -1,3 +1,4 @@
+*[中文版本可在此处查看](README_zh.md)*
 # PerfectPixel GUI
 
 A web-based graphical user interface for the [Perfect Pixel](https://github.com/theamusing/perfectPixel) library, providing automatic grid detection and pixel art optimization through an intuitive browser interface.
@@ -235,5 +236,3 @@ If you encounter any problems, please submit them in the GitHub Issues.
 ---
 
 **Note**: This is a third-party GUI interface for the Perfect Pixel library. The core algorithm and library are developed and maintained by [theamusing](https://github.com/theamusing/perfectPixel).
-
-*[中文版本可在此处查看](README_zh.md)*
