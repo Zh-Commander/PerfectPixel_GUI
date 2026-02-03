@@ -1,0 +1,80 @@
+{
+    "language": "English",
+    "language_code": "en",
+    "title": "PerfectPixel Web GUI",
+    "header": {
+        "title": "PerfectPixel Web GUI",
+        "subtitle": "Auto grid detection and pixel art refinement",
+        "description": "Upload an image, adjust parameters, and get a pixel-perfect result."
+    },
+    "cards": {
+        "image_upload": "Image Upload",
+        "processed_result": "Processed Result",
+        "processing_parameters": "Processing Parameters",
+        "about_perfectpixel": "About PerfectPixel"
+    },
+    "upload_area": {
+        "drag_drop": "Drag & drop or click to upload",
+        "supported_formats": "Supports PNG, JPG, JPEG, BMP, GIF, TIFF",
+        "upload_button": "Upload Image"
+    },
+    "preview": {
+        "original_preview": "Original Preview"
+    },
+    "results": {
+        "original": "Original",
+        "processed": "Processed",
+        "download_button": "Download Processed Image",
+        "process_another": "Process Another",
+        "debug_toggle": "Show/Hide Debug Visualization",
+        "debug_title": "Debug Grid Visualization",
+        "zoom_level": "Zoom Level",
+        "zoom_control": "Image Zoom",
+        "zoom_description": "Adjust zoom level to view pixel details (1x‑16x)"
+    },
+    "parameters": {
+        "sample_method": "Sample Method",
+        "sample_method_options": {
+            "center": "Center (default)",
+            "median": "Median",
+            "majority": "Majority"
+        },
+        "sample_method_description": "How to sample each grid cell: center picks the center pixel, median uses median color, majority uses clustering.",
+        "grid_size": "Grid Size (optional)",
+        "width": "Width",
+        "height": "Height",
+        "grid_size_description": "Manually set grid size (width x height). Leave blank for auto-detection.",
+        "min_pixel_size": "Min Pixel Size",
+        "min_pixel_size_description": "Minimum pixel size to consider valid (4‑20). Smaller values detect finer grids.",
+        "peak_width": "Peak Width",
+        "peak_width_description": "Minimum peak width for peak detection (1‑20). Affects grid detection sensitivity.",
+        "refine_intensity": "Refine Intensity",
+        "refine_intensity_description": "Intensity for grid line refinement (0‑0.5). Higher values allow more adjustment.",
+        "fix_square": "Fix Square",
+        "fix_square_description": "Enforce output to be square when detected image is almost square.",
+        "debug_mode": "Debug Mode",
+        "debug_mode_description": "Show debug visualization (grid lines over original image). Note: may increase processing time."
+    },
+    "buttons": {
+        "process_image": "Process Image"
+    },
+    "loading": {
+        "processing": "Processing image... This may take a few seconds."
+    },
+    "alerts": {
+        "success": "Image processed successfully!",
+        "upload_success": "Image uploaded successfully!",
+        "upload_first": "Please upload an image first"
+    },
+    "about": {
+        "paragraph1": "PerfectPixel automatically detects the optimal grid size from pixel‑style images and delivers perfectly aligned, pixel‑perfect results.",
+        "paragraph2": "Default parameters work well for most images. Adjust sliders if the auto‑detected grid seems off."
+    },
+    "footer": {
+        "copyright": "PerfectPixel Web GUI &copy; 2026 | Powered by Flask & perfect-pixel library"
+    },
+    "language_switcher": {
+        "english": "English",
+        "chinese": "中文"
+    }
+}

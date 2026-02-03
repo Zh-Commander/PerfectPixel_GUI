@@ -1,0 +1,80 @@
+{
+    "language": "中文",
+    "language_code": "zh",
+    "title": "PerfectPixel 网页界面",
+    "header": {
+        "title": "PerfectPixel 网页界面",
+        "subtitle": "自动网格检测与像素艺术优化",
+        "description": "上传图像，调整参数，获取像素完美结果。"
+    },
+    "cards": {
+        "image_upload": "图像上传",
+        "processed_result": "处理结果",
+        "processing_parameters": "处理参数",
+        "about_perfectpixel": "关于 PerfectPixel"
+    },
+    "upload_area": {
+        "drag_drop": "拖放或点击上传",
+        "supported_formats": "支持 PNG、JPG、JPEG、BMP、GIF、TIFF 格式",
+        "upload_button": "上传图像"
+    },
+    "preview": {
+        "original_preview": "原始预览"
+    },
+    "results": {
+        "original": "原始图像",
+        "processed": "处理结果",
+        "download_button": "下载处理后的图像",
+        "process_another": "处理另一张",
+        "debug_toggle": "显示/隐藏调试可视化",
+        "debug_title": "调试网格可视化",
+        "zoom_level": "缩放级别",
+        "zoom_control": "图像缩放",
+        "zoom_description": "调整缩放级别以查看像素细节 (1x‑16x)"
+    },
+    "parameters": {
+        "sample_method": "采样方法",
+        "sample_method_options": {
+            "center": "中心（默认）",
+            "median": "中位数",
+            "majority": "多数"
+        },
+        "sample_method_description": "如何采样每个网格单元：中心选择中心像素，中位数使用中位数颜色，多数使用聚类。",
+        "grid_size": "网格尺寸（可选）",
+        "width": "宽度",
+        "height": "高度",
+        "grid_size_description": "手动设置网格尺寸（宽×高）。留空使用自动检测。",
+        "min_pixel_size": "最小像素尺寸",
+        "min_pixel_size_description": "考虑有效的最小像素尺寸（4‑20）。较小值检测更精细的网格。",
+        "peak_width": "峰值宽度",
+        "peak_width_description": "峰值检测的最小宽度（1‑20）。影响网格检测灵敏度。",
+        "refine_intensity": "细化强度",
+        "refine_intensity_description": "网格线细化的强度（0‑0.5）。值越高允许更多调整。",
+        "fix_square": "修复正方形",
+        "fix_square_description": "当检测到图像接近正方形时，强制输出为正方形。",
+        "debug_mode": "调试模式",
+        "debug_mode_description": "显示调试可视化（原始图像上的网格线）。注意：可能会增加处理时间。"
+    },
+    "buttons": {
+        "process_image": "处理图像"
+    },
+    "loading": {
+        "processing": "正在处理图像... 可能需要几秒钟。"
+    },
+    "alerts": {
+        "success": "图像处理成功！",
+        "upload_success": "图像上传成功！",
+        "upload_first": "请先上传图像"
+    },
+    "about": {
+        "paragraph1": "PerfectPixel 自动从像素风格图像中检测最佳网格尺寸，并提供完美对齐的像素完美结果。",
+        "paragraph2": "默认参数适用于大多数图像。如果自动检测的网格看起来不合适，请调整滑块。"
+    },
+    "footer": {
+        "copyright": "PerfectPixel 网页界面 &copy; 2026 | 基于 Flask & perfect-pixel 库"
+    },
+    "language_switcher": {
+        "english": "English",
+        "chinese": "中文"
+    }
+}

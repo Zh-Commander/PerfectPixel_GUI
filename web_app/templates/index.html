@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t.title }}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        .image-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background-color: #fdfdfd;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .parameter-group {
+            margin-bottom: 1.5rem;
+        }
+        .slider-value {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .btn-process {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .result-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .comparison-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .comparison-item {
+            flex: 1;
+            min-width: 300px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .alert {
+            border-radius: 8px;
+        }
+        .slider-container {
+            padding: 0 10px;
+        }
+        .debug-section {
+            border-left: 4px solid #ffc107;
+            padding-left: 15px;
+            margin-top: 20px;
+        }
+        /* Ensure pixelated rendering for the output preview */
+        .pixelated {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+  
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header text-center position-relative">
+            <!-- Language switcher -->
+            <div class="position-absolute top-0 end-0 m-3">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Language switcher">
+                    <button type="button" class="btn btn-outline-light language-btn {% if lang == 'en' %}active{% endif %}" data-lang="en">
+                        {{ t.language_switcher.english }}
+                    </button>
+                    <button type="button" class="btn btn-outline-light language-btn {% if lang == 'zh' %}active{% endif %}" data-lang="zh">
+                        {{ t.language_switcher.chinese }}
+                    </button>
+                </div>
+            </div>
+            <h1 class="display-4"><i class="bi bi-grid-3x3-gap"></i> {{ t.header.title }}</h1>
+            <p class="lead">{{ t.header.subtitle }}</p>
+            <p class="mb-0">{{ t.header.description }}</p>
+        </div>
+
+        <!-- Main content row -->
+        <div class="row">
+            <!-- Left column: Image upload and preview -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-image"></i> {{ t.cards.image_upload }}
+                    </div>
+                    <div class="card-body">
+                        <div class="image-container" id="uploadArea">
+                            <i class="bi bi-cloud-upload" style="font-size: 3rem; color: #6c757d;"></i>
+                            <h5 class="mt-3">{{ t.upload_area.drag_drop }}</h5>
+                            <p class="text-muted">{{ t.upload_area.supported_formats }}</p>
+                            <input type="file" id="fileInput" class="form-control" accept="image/*">
+                            <button class="btn btn-outline-primary mt-3" id="btnUpload">
+                                <i class="bi bi-upload"></i> {{ t.upload_area.upload_button }}
+                            </button>
+                        </div>
+                        <div class="mt-3" id="previewContainer" style="display:none;">
+                            <h6>{{ t.preview.original_preview }}</h6>
+                            <img id="previewImage" class="image-preview" src="" alt="Preview">
+                            <div class="mt-2">
+                                <small class="text-muted" id="imageInfo"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Card -->
+                <div class="card" id="resultCard" style="display:none;">
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-check-circle"></i> {{ t.cards.processed_result }}
+                    </div>
+                    <div class="card-body">
+                        <div class="comparison-container">
+                            <div class="comparison-item">
+                                <h6>{{ t.results.processed }} <span id="gridSizeBadge" class="badge bg-info"></span></h6>
+                                <div class="zoom-image-container">
+                                    <img id="processedPreview" class="result-image pixelated" src="" alt="Processed">
+                                </div>
+                                <!-- Zoom control -->
+                                <div class="parameter-group mt-3">
+                                    <label class="form-label fw-bold">{{ t.results.zoom_control }}: <span id="zoomValue" class="slider-value">1x</span></label>
+                                    <div class="slider-container">
+                                        <input type="range" class="form-range" id="zoomLevel" min="1" max="16" step="1" value="1">
+                                    </div>
+                                    <div class="form-text">
+                                        {{ t.results.zoom_description }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <a id="downloadLink" class="btn btn-success" href="#" download>
+                                <i class="bi bi-download"></i> {{ t.results.download_button }}
+                            </a>
+                            <button id="btnReset" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-repeat"></i> {{ t.results.process_another }}
+                            </button>
+                        </div>
+                        <div class="mt-3" id="debugSection" style="display:none;">
+                            <button class="btn btn-outline-warning btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#debugCollapse">
+                                <i class="bi bi-eyeglasses"></i> {{ t.results.debug_toggle }}
+                            </button>
+                            <div class="collapse mt-2" id="debugCollapse">
+                                <div class="card card-body">
+                                    <h6>{{ t.results.debug_title }}</h6>
+                                    <img id="debugImage" class="result-image pixelated" src="" alt="Debug visualization">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right column: Parameters and controls -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <i class="bi bi-sliders"></i> {{ t.cards.processing_parameters }}
+                    </div>
+                    <div class="card-body">
+                        <form id="parameterForm">
+                            <!-- Sample Method -->
+                            <div class="parameter-group">
+                                <label class="form-label fw-bold">{{ t.parameters.sample_method }}</label>
+                                <select class="form-select" id="sampleMethod" name="sample_method">
+                                    <option value="center" selected>{{ t.parameters.sample_method_options.center }}</option>
+                                    <option value="median">{{ t.parameters.sample_method_options.median }}</option>
+                                    <option value="majority">{{ t.parameters.sample_method_options.majority }}</option>
+                                </select>
+                                <div class="form-text">
+                                    {{ t.parameters.sample_method_description }}
+                                </div>
+                            </div>
+
+                            <!-- Grid Size (optional) -->
+                            <div class="parameter-group">
+                                <label class="form-label fw-bold">{{ t.parameters.grid_size }}</label>
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="number" class="form-control" id="gridWidth" placeholder="{{ t.parameters.width }}" min="1" max="500">
+                                    </div>
+                                    <div class="col">
+                                        <input type="number" class="form-control" id="gridHeight" placeholder="{{ t.parameters.height }}" min="1" max="500">
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.grid_size_description }}
+                                </div>
+                            </div>
+
+                            <!-- Sliders -->
+                            <div class="parameter-group">
+                                <label class="form-label fw-bold">{{ t.parameters.min_pixel_size }}: <span id="minSizeValue" class="slider-value">4.0</span></label>
+                                <div class="slider-container">
+                                    <input type="range" class="form-range" id="minSize" min="4" max="20" step="0.5" value="4">
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.min_pixel_size_description }}
+                                </div>
+                            </div>
+
+                            <div class="parameter-group">
+                                <label class="form-label fw-bold">{{ t.parameters.peak_width }}: <span id="peakWidthValue" class="slider-value">6</span></label>
+                                <div class="slider-container">
+                                    <input type="range" class="form-range" id="peakWidth" min="1" max="20" step="1" value="6">
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.peak_width_description }}
+                                </div>
+                            </div>
+
+                            <div class="parameter-group">
+                                <label class="form-label fw-bold">{{ t.parameters.refine_intensity }}: <span id="refineIntensityValue" class="slider-value">0.25</span></label>
+                                <div class="slider-container">
+                                    <input type="range" class="form-range" id="refineIntensity" min="0" max="0.5" step="0.05" value="0.25">
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.refine_intensity_description }}
+                                </div>
+                            </div>
+
+                            <!-- Checkboxes -->
+                            <div class="parameter-group">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="fixSquare" checked>
+                                    <label class="form-check-label fw-bold" for="fixSquare">{{ t.parameters.fix_square }}</label>
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.fix_square_description }}
+                                </div>
+                            </div>
+
+                            <div class="parameter-group debug-section">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="debug">
+                                    <label class="form-check-label fw-bold" for="debug">{{ t.parameters.debug_mode }}</label>
+                                </div>
+                                <div class="form-text">
+                                    {{ t.parameters.debug_mode_description }}
+                                </div>
+                            </div>
+
+                            <!-- Process Button -->
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-process btn-lg" id="btnProcess">
+                                    <i class="bi bi-magic"></i> {{ t.buttons.process_image }}
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Loading indicator -->
+                        <div class="loading" id="loading">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Processing...</span>
+                            </div>
+                            <p class="mt-2">{{ t.loading.processing }}</p>
+                        </div>
+
+                        <!-- Error alert -->
+                        <div class="alert alert-danger mt-3" id="errorAlert" role="alert" style="display:none;">
+                            <i class="bi bi-exclamation-triangle"></i> <span id="errorText"></span>
+                        </div>
+
+                        <!-- Success alert -->
+                        <div class="alert alert-success mt-3" id="successAlert" role="alert" style="display:none;">
+                            <i class="bi bi-check-circle"></i> {{ t.alerts.success }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Card -->
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <i class="bi bi-info-circle"></i> {{ t.cards.about_perfectpixel }}
+                    </div>
+                    <div class="card-body">
+                        <p>{{ t.about.paragraph1 }}</p>
+                        <p class="mb-0"><strong>Default parameters</strong> {{ t.about.paragraph2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center mt-5 text-muted">
+            <p>{{ t.footer.copyright }}</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Translations for JavaScript -->
+    <script>
+        // Make translations available to JavaScript
+        window.translations = {{ t|tojson }};
+        window.currentLanguage = '{{ lang }}';
+    </script>
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

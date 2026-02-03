@@ -1,0 +1,9 @@
+uploads/
+*.log
+__pycache__/
+*.pyc
+*.pyo
+.env
+.DS_Store
+*.tmp
+server.log
